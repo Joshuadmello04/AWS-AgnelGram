@@ -3,11 +3,11 @@ import "dotenv/config";
 import http from "http";
 import cors from "cors";
 import { v4 as uuidv4 } from "uuid";
-import userRouter from "./userRoutes";
+import userRouter from "./userRoutes.js";
 import { Server } from "socket.io";
-import { dynamoDB } from "./awsConfig";
+import { dynamoDB } from "./awsConfig.js";
 import jwt from "jsonwebtoken";
-import { Message } from "./userModel";
+import { Message } from "./userModel.js";
 
 const app = express();
 const server = http.createServer(app);

@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
-import { dynamoDB } from "./awsConfig";
+import { dynamoDB } from "./awsConfig.js";
 import "dotenv/config";
 
 const router = Router();
@@ -71,9 +71,9 @@ router.get("/user", async (req: Request, res: Response) => {
 
 // ✅ Send a message
 router.post("/send", async (req: Request, res: Response) => {
-  const { sender, reciver, content } = req.body;
+  const { sender, reciver, message } = req.body;
 
-  if (!sender || !reciver || !content) {
+  if (!sender || !reciver || !message) {
     return res.status(400).send("Missing required fields");
   }
 
@@ -83,23 +83,23 @@ router.post("/send", async (req: Request, res: Response) => {
   const timestamp = Date.now();
   const messageId = uuidv4();
 
-  const message = {
+  const messageData = {
     conversationId,
     timestamp,
     messageId,
     sender,
     reciver,
-    content,
+    message,
   };
 
   const params = {
     TableName: MESSAGES_TABLE,
-    Item: message,
+    Item: messageData,
   };
 
   try {
     await dynamoDB.put(params).promise();
-    res.send({ message: "Message sent", data: message });
+    res.send({ message: "Message sent", data: messageData });
   } catch (err) {
     console.error("Error sending message:", err);
     res.status(500).send("Failed to send message");
@@ -123,7 +123,7 @@ router.get("/messages", async (req: Request, res: Response) => {
     ExpressionAttributeValues: {
       ":cid": conversationId,
     },
-    ScanIndexForward: true, // sort from oldest to newest
+    ScanIndexForward: true,
   };
 
   try {
