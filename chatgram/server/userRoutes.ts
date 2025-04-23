@@ -71,7 +71,7 @@ router.get("/user", async (req: Request, res: Response) => {
 
 // ✅ Send a message
 router.post("/send", async (req: Request, res: Response) => {
-  const { sender, reciver, message } = req.body;
+  const { sender, reciver, message, type = "text" } = req.body;
 
   if (!sender || !reciver || !message) {
     return res.status(400).send("Missing required fields");
@@ -90,6 +90,8 @@ router.post("/send", async (req: Request, res: Response) => {
     sender,
     reciver,
     message,
+    type,
+    time: new Date().toISOString(),
   };
 
   const params = {

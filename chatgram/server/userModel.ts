@@ -1,5 +1,4 @@
 // usermodel.ts
-
 export interface User {
   email: string;     // Unique email used as the identifier (primary key)
   name: string;
@@ -8,12 +7,12 @@ export interface User {
 
 // Messages are stored in a separate DynamoDB table: `chatgram_messages`
 export interface Message {
-    messageId: string;
-    conversationId: string;
-    timestamp: number;
-    message: string;
-    sender: string;
-    reciver: string;
-    time: string;
-  }
-  
+  messageId: string;
+  conversationId: string;
+  timestamp: number;
+  message: string;
+  sender: string;
+  reciver: string;
+  time: string;
+  type: string; // 'text' or 'file'
+}  
