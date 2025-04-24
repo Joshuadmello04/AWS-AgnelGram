@@ -18,14 +18,14 @@ app.use(express.json());
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 // S3 Client setup
-if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !process.env.AWS_REGION) {
+if (!process.env.APP_ACCESS_KEY_ID || !process.env.APP_SECRET_ACCESS_KEY || !process.env.APP_REGION) {
     throw new Error("AWS credentials or region are not defined in environment variables");
 }
 const s3Client = new S3Client({
-    region: process.env.AWS_REGION,
+    region: process.env.APP_REGION,
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: process.env.APP_ACCESS_KEY_ID,
+        secretAccessKey: process.env.APP_SECRET_ACCESS_KEY,
     },
 });
 const io = new Server(server, {
@@ -94,7 +94,7 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
             messageId: uuidv4(),
             conversationId,
             timestamp: Date.now(),
-            message: `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`,
+            message: `https://${process.env.S3_BUCKET}.s3.${process.env.APP_REGION}.amazonaws.com/${fileName}`,
             sender,
             reciver: receiver,
             time: new Date().toISOString(),
