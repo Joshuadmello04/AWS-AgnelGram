@@ -15,7 +15,7 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // Multer setup for file uploads
@@ -37,11 +37,11 @@ const s3Client = new S3Client({
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
   },
 });
 
-io.on("connection", (socket) => {
+io.on("connection", (socket) => { 
   socket.on("joined", () => {
     io.sockets.emit("new-user", "new user joined");
   });
@@ -142,5 +142,5 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
 app.use("/", userRouter);
 
 server.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://0.0.0.0:${PORT}`);
 });

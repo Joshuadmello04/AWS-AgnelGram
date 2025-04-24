@@ -17,7 +17,7 @@ function MessageInp() {
   const selectedUser = useSelectedUser((state) => state.selectedUser);
   const myUser = useUser((state) => state.myUser);
   const [cookie] = useCookies(["user"]);
-  const socket = io("http://localhost:4000");
+  const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -47,7 +47,7 @@ function MessageInp() {
     formData.append("token", cookie.user);
 
     try {
-      const response = await fetch("http://localhost:4000/api/upload", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
         method: "POST",
         body: formData,
       });

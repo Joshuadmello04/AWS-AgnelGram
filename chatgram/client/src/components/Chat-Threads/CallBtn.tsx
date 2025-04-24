@@ -8,7 +8,7 @@ import { io } from "socket.io-client";
 
 function CallBtn() {
   const router = useRouter();
-  const socket = io("http://localhost:4000");
+  const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
   const [cookie] = useCookies(["user"]);
   const selectedUser = useSelectedUser((state) => state.selectedUser);
   const myUser = useUser((state) => state.myUser);
